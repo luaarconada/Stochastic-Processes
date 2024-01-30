@@ -1,0 +1,109 @@
+---
+title: "LúaArconada_Partial2"
+author: "Lúa"
+date: "2024-01-08"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exercise 1
+
+Introduce the matrices.
+
+```{r}
+P= matrix(c(0.5,0,0.5,0,0,0.2,0,0.8,0.3,0,0.7,0,0,0.6,0,0.4),nrow=4,byrow=T)
+P
+Q=matrix (c(0.5,0,0.5,0,0,0.2,0.1,0.7,0.3,0,0.7,0,0,0.6,0,0.4),nrow=4,byrow=T)
+Q
+R=matrix(c(0.5,0,0.5,0,0,0.2,0.1,0.7,0.3,0,0.6,0.1,0,0.6,0,0.4),nrow=4,byrow=T)
+R
+```
+```{r,echo=FALSE}
+matrixpower <- function(mat,k) {
+	if (k == 0) return (diag(dim(mat)[1])) 
+	if (k == 1) return(mat)
+	if (k > 1) return( mat %*% matrixpower(mat, k-1))
+ }
+stationary <- function(mat) {
+x = eigen(t(mat))$vectors[,1]
+as.double(x/sum(x))
+}
+```
+
+
+## b)
+```{r}
+matrixpower(P,100)
+matrixpower(P,2000)
+matrixpower(P,2500)
+
+matrixpower(Q,100)
+matrixpower(Q,2000)
+matrixpower(Q,2500)
+
+matrixpower(R,100)
+matrixpower(R,2000)
+matrixpower(R,2500)
+```
+
+## c)
+```{r}
+stationary(P)
+stationary(P)%*%P #check to see that it is stationary
+
+stationary(Q)
+stationary(Q) %*% Q #check to see that it is stationary
+
+stationary(R)
+stationary(R)%*%R #check to see that it is stationary
+```
+
+## d)
+```{r}
+alpha=c(0,1,0,0)
+alpha %*% matrixpower(P,1000)
+alpha %*% matrixpower(Q,1000)
+alpha %*% matrixpower(R,1000)
+```
+
+## e)
+```{r}
+1/stationary(R)
+```
+
+# Exercise 2
+
+## a)
+```{r}
+pnorm(1,0,sqrt(5))-pnorm(-1,0,sqrt(5))
+```
+
+## b)
+```{r}
+pnorm(3,0,sqrt(4))-pnorm(1,0,sqrt(4))
+```
+
+## c)
+```{r}
+2*(1-pnorm(0.3, 0, sqrt(9))) - 2*(1-pnorm(0.3, 0, sqrt(5)))
+```
+
+## d)
+```{r}
+1-2/pi*acos(sqrt(1/10))
+2/pi*asin((sqrt(1/10)))
+```
+
+## e)
+```{r}
+mu=0.03
+sigma=0.2
+pnorm(log(0.8),mu*7,sigma*sqrt(7))
+```
